@@ -1,6 +1,34 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+
+const loadingManager = new THREE.LoadingManager()
+
+const textureLoader = new THREE.TextureLoader(loadingManager)
+
+const colorTexture = textureLoader.load('/textures/door/color.jpg',)
+const alphaTexture = textureLoader.load('/textures/door/alpha.jpg',)
+const heightTexture = textureLoader.load('/textures/door/height.jpg',)
+
+
+colorTexture.repeat.x = 3
+colorTexture.repeat.y = 2
+colorTexture.wrapS = THREE.RepeatWrapping
+colorTexture.wrapT = THREE.RepeatWrapping
+
+colorTexture.offset.x = 0.5
+colorTexture.offset.y = 0.5
+
+colorTexture.rotation = Math.PI / 4
+colorTexture.center.x = 0.5
+colorTexture.center.y = 0.5
+
+/**
+ * colorTexture.minFilter
+ * 
+ * Lets say we are working with textures that are too small and appears blurry, we can use magFilter, which is the opposite of minFilter.
+ * colorTexture.magFilter
+ */
 /**
  * Base
  */
@@ -14,7 +42,7 @@ const scene = new THREE.Scene()
  * Object
  */
 const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const material = new THREE.MeshBasicMaterial({ map: colorTexture })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
