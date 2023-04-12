@@ -16,6 +16,9 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+const textureLoader = new THREE.TextureLoader()
+const matcap = textureLoader.load('/textures/matcaps/2.png')
+
 const fontLoader = new FontLoader()
 fontLoader.load(
     '/fonts/helvetiker_regular.typeface.json',
@@ -34,17 +37,38 @@ fontLoader.load(
                 bevelSegments: 4
             }
         )
-        textGeometry.computeBoundingBox() 
-        const textMaterial = new THREE.MeshBasicMaterial()
+        textGeometry.computeBoundingBox()
+        textGeometry.center()
+        const textMaterial = new THREE.MeshMatcapMaterial({matcap: matcap})
         const text = new THREE.Mesh(textGeometry, textMaterial)
         scene.add(text)
     }
 )
 
+const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45)
+const donutMaterial = new THREE.MeshMatcapMaterial({matcap: matcap})
+
+for (let i=0; i<100; i++) {
+    
+    const donut = new THREE.Mesh(donutGeometry, donutMaterial)
+
+    donut.position.x = (Math.random() - 0.5) * 10
+    donut.position.y = (Math.random() - 0.5) * 10
+    donut.position.z = (Math.random() - 0.5) * 10
+
+    donut.rotation.x = Math.random() * Math.PI
+    donut.rotation.y = Math.random() * Math.PI
+
+    const scale = Math.random()
+    donut.scale.set(scale, scale, scale)
+    scene.add(donut)
+
+}
+
 /**
  * Textures
  */
-const textureLoader = new THREE.TextureLoader()
+
 
 /**
  * Object
