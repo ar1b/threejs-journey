@@ -17,7 +17,6 @@ const scene = new THREE.Scene()
 //Loading bake texture
 
 const textureLoader = new THREE.TextureLoader()
-const bakedShadow = textureLoader.load('/textures/bakedShadow.jpg')
 const simpleShadow = textureLoader.load('/textures/simpleShadow.jpg')
 /**
  * Lights
