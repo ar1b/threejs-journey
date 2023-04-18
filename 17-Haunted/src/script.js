@@ -22,13 +22,79 @@ const textureLoader = new THREE.TextureLoader()
 /**
  * House
  */
-// Temporary sphere
-const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ roughness: 0.7 })
+
+const house = new THREE.Group()
+scene.add(house)
+
+//Walls
+const walls = new THREE.Mesh(
+    new THREE.BoxGeometry(4,2.5,4),
+    new THREE.MeshStandardMaterial({color: '#ac8e82'})
 )
-sphere.position.y = 1
-scene.add(sphere)
+walls.position.y = 1.25
+house.add(walls)
+
+//roof
+const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(3.5, 1, 4),
+    new THREE.MeshStandardMaterial({color: '#b35f45'})
+)
+roof.position.y = 3
+roof.rotation.y = Math.PI * 0.25
+house.add(roof)
+
+//door
+const door = new THREE.Mesh(
+    new THREE.PlaneGeometry(2,2),
+    new THREE.MeshStandardMaterial({color: '#aa7b7b'})
+)
+door.position.z = 2 + 0.01
+door.position.y = 1
+house.add(door)
+
+//Bushes
+const bushGeo = new THREE.SphereGeometry(1, 16, 16)
+const bushMat = new THREE.MeshStandardMaterial({color: '#89c854'})
+
+const bush1 = new THREE.Mesh(bushGeo, bushMat)
+bush1.scale.set(0.5,0.5,0.5)
+bush1.position.set(0.8,0.2,2.2)
+
+const bush2 = new THREE.Mesh(bushGeo, bushMat)
+bush2.scale.set(0.25,0.25,0.25)
+bush2.position.set(1.4,0.1,2.1)
+
+const bush3 = new THREE.Mesh(bushGeo, bushMat)
+bush3.scale.set(0.4,0.4,0.4)
+bush3.position.set(-0.8,0.1,2.2)
+
+const bush4 = new THREE.Mesh(bushGeo, bushMat)
+bush4.scale.set(0.15,0.15,0.15)
+bush4.position.set(-1,0.05,2.6)
+
+house.add(bush1, bush2, bush3, bush4)
+
+//graveyard
+//grave group
+const graves = new THREE.Group()
+scene.add(graves)
+
+const graveGeo = new THREE.BoxGeometry(0.6, 0.8, 0.2)
+const graveMat = new THREE.MeshStandardMaterial({color: '#b2b6b1'})
+
+for (let i=0; i<50; i++ ) {
+    const angle = Math.random() * Math.PI * 2
+    const radius = 3 + Math.random() * 6
+    const x = Math.sin(angle) * radius
+    const z = Math.cos(angle) * radius
+
+    const grave = new THREE.Mesh(graveGeo, graveMat)
+    grave.position.set(x, 0.3, z)
+    grave.rotation.y = (Math.random() - 0.5) * 0.4
+    grave.rotation.z = (Math.random() - 0.5) * 0.4
+    graves.add(grave)
+}
+
 
 // Floor
 const floor = new THREE.Mesh(
@@ -43,7 +109,7 @@ scene.add(floor)
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
+const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.12)
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
