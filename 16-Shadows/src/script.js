@@ -28,7 +28,7 @@ const simpleShadow = textureLoader.load('/textures/simpleShadow.jpg')
 
 const spotLight = new THREE.SpotLight('white', 0.8, 10, Math.PI * 0.3)
 spotLight.castShadow = false
-spotLight.position.set(0,2,2)
+spotLight.position.set(0,2,3)
 scene.add(spotLight)
 scene.add(spotLight.target)
 

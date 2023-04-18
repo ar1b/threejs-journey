@@ -39,6 +39,7 @@ fontLoader.load(
         )
         textGeometry.computeBoundingBox()
         textGeometry.center()
+        textGeometry.trs
         const textMaterial = new THREE.MeshMatcapMaterial({matcap: matcap})
         const text = new THREE.Mesh(textGeometry, textMaterial)
         scene.add(text)
