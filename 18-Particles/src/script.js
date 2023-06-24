@@ -111,9 +111,9 @@ const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
 
-    //Update Particles
-    particles.rotation.y = elapsedTime * 0.2
-
+    for (let i=0;i<count;i++){
+        //empty fucntion
+    }
     // Update controls
     controls.update()
 
