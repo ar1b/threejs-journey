@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
+THREE.ColorManagement.enabled = false
+
 /**
  * Base
  */
@@ -19,45 +21,50 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 
-const particleTexture = textureLoader.load('/textures/particles/2.png')
+const particleTexture = textureLoader.load('/textures/particles/1.png')
 
-//Particles
+//Particles geometry and material
+const particleGeo = new THREE.BufferGeometry()
 
-const particlesGeometry = new THREE.BufferGeometry(1, 32, 32)
 const count = 5000
-
 const positions = new Float32Array(count * 3)
 const colors = new Float32Array(count * 3)
 
-for(let i=0; i< count * 3; i++) {
+for(let i=0; i<count *3; i++){
     positions[i] = (Math.random() - 0.5) * 10
     colors[i] = Math.random()
 }
-particlesGeometry.setAttribute(
+particleGeo.setAttribute(
     'position',
-    new THREE.BufferAttribute(positions, 3)
+    new  THREE.BufferAttribute(positions, 3)
 )
-
-particlesGeometry.setAttribute(
+particleGeo.setAttribute(
     'color',
     new THREE.BufferAttribute(colors, 3)
 )
 
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.2,
+const particleMat = new THREE.PointsMaterial({
+    size: 0.02,
+    //size attenuation adjusts particle sizes based on camera distance
     sizeAttenuation: true,
+    map: particleTexture,
     transparent: true,
     alphaMap: particleTexture,
+    //alphaTest: 0.001
+    //depthTest: false
     depthWrite: false,
     blending: THREE.AdditiveBlending,
     vertexColors: true
-
 })
 
-//Points
-
-const particles = new THREE.Points(particlesGeometry, particlesMaterial)
+//creating the particles
+const particles = new THREE.Points(particleGeo, particleMat)
 scene.add(particles)
+
+
+
+
+
 /**
  * Sizes
  */
@@ -99,9 +106,9 @@ controls.enableDamping = true
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
 /**
  * Animate
  */
@@ -111,9 +118,9 @@ const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
 
-    for (let i=0;i<count;i++){
-        //empty fucntion
-    }
+    //Updating particlers
+    particles.rotation.y = elapsedTime * 0.2
+
     // Update controls
     controls.update()
 
