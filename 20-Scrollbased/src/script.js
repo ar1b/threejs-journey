@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import * as dat from 'lil-gui'
+import gsap from 'gsap'
 
 THREE.ColorManagement.enabled = false
 
@@ -128,10 +129,25 @@ const renderer = new THREE.WebGLRenderer({
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
  //Scrolling
  let scrollY = window.scrollY
+ let currentSection = 0
  window.addEventListener( 'scroll', () => {
     scrollY = window.scrollY
+    const newSection = Math.round(scrollY / sizes.height)
+    if(newSection != currentSection) {
+        currentSection = newSection
+        gsap.to(
+            sectionMeshes[currentSection].rotation, {
+                duration: 1.5,
+                ease: 'power2.inOut',
+                x: '+=6',
+                y: '+=3',
+                z: '+=1.5'
+            }
+        )
+    }
  })
 
 const cursor = {}
